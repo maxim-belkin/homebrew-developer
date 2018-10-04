@@ -35,7 +35,7 @@ module Homebrew
     if tap.remote.nil?
       "#{tap.user}/homebrew-#{tap.repo}"
     else
-      x = tap.remote[%r{^https://github\.com/([^.]+)(\.git)?$}, 1]
+      x = tap.remote[%r{^(https://|git@)github\.com(/|:)([^.]+)(\.git)?$}, 3]
       (tap.official? && !x.nil?) ? x.capitalize : x
     end
   end
