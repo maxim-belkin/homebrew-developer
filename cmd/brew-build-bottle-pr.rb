@@ -18,7 +18,7 @@ module Homebrew
   end
 
   def remote
-    @remote ||= ARGV.value("remote") || ENV["HOMEBREW_GITHUB_USER"]
+    @remote ||= ARGV.value("remote") || ENV["HOMEBREW_GITHUB_USER"] || "origin"
   end
 
   def tap_dir
