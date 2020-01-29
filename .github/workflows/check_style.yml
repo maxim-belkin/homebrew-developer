@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    if: startsWith(github.repository, 'Homebrew')
     runs-on: ubuntu-latest
     container: homebrew/brew
     env:
