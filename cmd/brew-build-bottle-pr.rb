@@ -49,9 +49,7 @@ module Homebrew
   end
 
   def remote_user(remote)
-    url = Utils.popen_read("git", "remote", "get-url", remote).chomp
-    match = url.match(%r{github\.com.(.+)/})
-    match[1]
+    Utils.popen_read("git", "remote", "get-url", remote)[%r{github\.com[/:]([^/]+)/}, 1]
   end
 
   def build_bottle(formula)
