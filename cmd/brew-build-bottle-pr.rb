@@ -49,9 +49,9 @@ module Homebrew
   end
 
   def remote_user(remote)
-    url = Utils.popen_read("git", "remote", "get-url", remote).chomp()
+    url = Utils.popen_read("git", "remote", "get-url", remote).chomp
     match = url.match(%r{github\.com.(.+)/})
-    return match[1]
+    match[1]
   end
 
   def build_bottle(formula)
@@ -100,7 +100,7 @@ module Homebrew
     ENV["HOMEBREW_DISABLE_LOAD_FORMULA"] = "1"
 
     odie "'HOMEBREW_GITHUB_API_TOKEN' is unset." unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
-    odie "'HOMEBREW_GITHUB_USER' is unset." unless (ENV["HOMEBREW_GITHUB_USER"] || ENV["USER"] != "linuxbrew")
+    odie "'HOMEBREW_GITHUB_USER' is unset." unless ENV["HOMEBREW_GITHUB_USER"] || ENV["USER"] != "linuxbrew"
     odie "Please install hub (brew install hub) before proceeding" unless which "hub"
     odie "No formula has been specified" unless formula
     odie "No remote has been specified: use `--remote=origin` or `--remote=$HOMEBREW_GITHUB_USER`" unless remote
