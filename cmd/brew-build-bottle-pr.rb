@@ -45,7 +45,13 @@ module Homebrew
       opoo "Please upgrade hub\n  brew upgrade hub"
     end
     args << "--browse" if ARGV.include? "--browse"
-    safe_system "hub", "pull-request", "-h", "#{remote}:#{branch}", "-m", message, *args
+    safe_system "hub", "pull-request", "-h", "#{remote_user(remote)}:#{branch}", "-m", message, *args
+  end
+
+  def remote_user(remote)
+    url = Utils.popen_read("git", "remote", "get-url", remote).chomp()
+    match = url.match(%r{github\.com.(.+)/})
+    return match[1]
   end
 
   def build_bottle(formula)
@@ -93,10 +99,13 @@ module Homebrew
   def build_bottle_pr
     ENV["HOMEBREW_DISABLE_LOAD_FORMULA"] = "1"
 
+    odie "'HOMEBREW_GITHUB_API_TOKEN' is unset." unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
+    odie "'HOMEBREW_GITHUB_USER' is unset." unless (ENV["HOMEBREW_GITHUB_USER"] || ENV["USER"] != "linuxbrew")
     odie "Please install hub (brew install hub) before proceeding" unless which "hub"
     odie "No formula has been specified" unless formula
     odie "No remote has been specified: use `--remote=origin` or `--remote=$HOMEBREW_GITHUB_USER`" unless remote
 
+    ENV["GITHUB_TOKEN"] = ENV["HOMEBREW_GITHUB_API_TOKEN"]
     build_bottle(formula)
   end
 end
