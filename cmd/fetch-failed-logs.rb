@@ -13,6 +13,8 @@ module Homebrew
 
         By default searches through workflow runs triggered by pull_request event.
       EOS
+      flag "--tap=",
+        description: "Search given tap."
       switch "--dispatched",
         description: "Search through workflow runs triggered by repository_dispatch event."
       switch "--quiet",
@@ -55,7 +57,8 @@ module Homebrew
 
     formula = Homebrew.args.resolved_formulae.first
     event = args.dispatched? ? "repository_dispatch" : "pull_request"
-    repo = "Homebrew/linuxbrew-core"
+    tap_name = Homebrew.args.tap ? Homebrew.args.tap : "homebrew/core"
+    repo = Tap.fetch(tap_name).full_name
 
     # First get latest workflow runs
     url = "https://api.github.com/repos/#{repo}/actions/runs?status=failure&event=#{event}"
