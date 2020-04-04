@@ -57,7 +57,7 @@ module Homebrew
 
     formula = Homebrew.args.resolved_formulae.first
     event = args.dispatched? ? "repository_dispatch" : "pull_request"
-    tap_name = Homebrew.args.tap ? Homebrew.args.tap : "homebrew/core"
+    tap_name = Homebrew.args.tap || "homebrew/core"
     repo = Tap.fetch(tap_name).full_name
 
     # First get latest workflow runs
